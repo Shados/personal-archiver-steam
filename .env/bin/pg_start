@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+if [[ ! -d "$PGDATA" ]]; then
+  mkdir -p "$PGDATA"
+  chmod 0700 "$PGDATA"
+	initdb -D "$PGDATA" --no-locale --encoding=UTF8 --no-clean --no-sync
+	cat >> "$PGDATA/postgresql.conf" <<-EOF
+		listen_addresses = ''
+		unix_socket_directories = '$PGDATA'
+	EOF
+	cat >> "$PGDATA/pg_ident.conf" <<-EOF
+		test ${USER} test
+	EOF
+  postgres --single -E postgres <<-EOF
+		CREATE ROLE test WITH LOGIN;
+		CREATE DATABASE test OWNER test;
+	EOF
+fi
+postgres -E

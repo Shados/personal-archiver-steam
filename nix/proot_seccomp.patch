@@ -1,0 +1,38 @@
+diff --git a/src/tracee/event.c b/src/tracee/event.c
+index 6ae9cb7..41e97cc 100644
+--- a/src/tracee/event.c
++++ b/src/tracee/event.c
+@@ -87,11 +87,6 @@ int launch_process(Tracee *tracee, char *const argv[])
+ 		 * does the same thing. */
+ 		kill(getpid(), SIGSTOP);
+ 
+-		/* Improve performance by using seccomp mode 2, unless
+-		 * this support is explicitly disabled.  */
+-		if (getenv("PROOT_NO_SECCOMP") == NULL)
+-			(void) enable_syscall_filtering(tracee);
+-
+ 		/* Now process is ptraced, so the current rootfs is already the
+ 		 * guest rootfs.  Note: Valgrind can't handle execve(2) on
+ 		 * "foreign" binaries (ENOEXEC) but can handle execvp(3) on such
+@@ -482,10 +477,6 @@ int handle_tracee_event_kernel_4_8(Tracee *tracee, int tracee_status)
+ 					exit(EXIT_FAILURE);
+ 				}
+ 			}
+-			else {
+-				if (getenv("PROOT_NO_SECCOMP") == NULL)
+-					seccomp_enabled = true;
+-			}
+ 		}
+ 			/* Fall through. */
+ 		case SIGTRAP | PTRACE_EVENT_SECCOMP2 << 8:
+@@ -711,10 +702,6 @@ int handle_tracee_event(Tracee *tracee, int tracee_status)
+ 					exit(EXIT_FAILURE);
+ 				}
+ 			}
+-            else {
+-                if (getenv("PROOT_NO_SECCOMP") == NULL)
+-                    seccomp_enabled = true;
+-            }
+ 		}
+ 
+ #if LINUX_VERSION_CODE >= KERNEL_VERSION(4,8,0)

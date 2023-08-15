@@ -1,0 +1,58 @@
+# TODO: move all python3.10 references into a single source of truth, same source as used by Nix
+# TODO: DRY project name
+[tool.poetry]
+name = "personal-archiver-steam"
+version = "0.1.0"
+description = "A personal archiver of Steam chat messages"
+authors = ["Alexei Robyn <shados@shados.net>"]
+license = "Apache-2.0 OR MIT"
+readme = "README.md"
+
+[tool.poetry.scripts]
+personal-archiver-steam = 'personal_archiver_steam:app'
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+importlib-metadata = "^6.8.0"
+
+alembic = "^1.11.2"
+psycopg2 = "^2.9.7"
+secretstorage = "^3.3.3"
+sqlalchemy = "^2.0.19"
+steamio = "^0.9.9"
+typer = "^0.9.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.7.0"
+isort = "^5.12.0"
+mypy = "^1.5.0"
+pre-commit = "^3.3.3"
+pytest = "^7.4.0"
+pytest-depends = "^1.0.1"
+
+# # May be useful later:
+# # pytest-mock = "^2.0.0"
+
+[tool.black]
+target_version = [ "py310" ]
+
+[tool.isort]
+profile = "black"
+
+[tool.pytest.ini_options]
+cache_dir = "$XDG_CACHE_HOME/pytest/personal-archiver-steam"
+
+[tool.mypy]
+cache_dir = "~/.cache/mypy"
+ignore_missing_imports = true
+disallow_untyped_defs = true
+allow_redefinition = true
+
+[[tool.mypy.overrides]]
+module = "steam.*"
+follow_imports = "skip"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,9 @@
+[flake8]
+max-complexity = 12
+
+# Make it compatible with Black
+max-line-length = 80
+extend-ignore = E203, E501, B008
+select = C, E, F, W, B, B950
+
+# vim: set ft=dosini:
