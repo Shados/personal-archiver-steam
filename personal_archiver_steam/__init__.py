@@ -1,3 +1,5 @@
+import os
+
 import jeepney
 import secretstorage
 import typer
@@ -16,13 +18,27 @@ app = typer.Typer()
 
 @app.command()
 def main() -> None:
-    # Pull secrets from Secret Service API
-    conn = secretstorage.dbus_init()
-    username = "Shados"
-    shared_secret = get_secret_by_path(
-        conn, "/Phone/Apps/Steam Guard - TOTP Secret"
-    ).decode("utf-8")
-    password = get_secret_by_path(conn, "/Gaming/Steam").decode("utf-8")
+    try:
+        username = os.environ["STEAM_USERNAME"]
+        password = os.environ["STEAM_PASSWORD"]
+        shared_secret = os.environ["STEAM_TOTP_SHARED_SECRET"]
+    except KeyError:
+        if "IN_DEV_ENV" in os.environ:
+            # Assume we're in my local dev env and try to pull secrets from
+            # Secret Service API
+            conn = secretstorage.dbus_init()
+            username = "Shados"
+            shared_secret = get_secret_by_path(
+                conn, "/Phone/Apps/Steam Guard - TOTP Secret"
+            ).decode("utf-8")
+            password = get_secret_by_path(conn, "/Gaming/Steam").decode("utf-8")
+        else:
+            print(
+                (
+                    "You must set the STEAM_USERNAME, STEAM_PASSWORD, and "
+                    "STEAM_TOTP_SHARED_SECRET environment variables appropriately"
+                )
+            )
 
     # Set up DB connection
     # TODO test connection failure handling
