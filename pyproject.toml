@@ -3,7 +3,7 @@
 [tool.poetry]
 name = "personal-archiver-steam"
 version = "0.1.0"
-description = "A personal archiver of Steam chat messages"
+description = "A logger for Steam chat direct messages"
 authors = ["Alexei Robyn <shados@shados.net>"]
 license = "Apache-2.0 OR MIT"
 readme = "README.md"
