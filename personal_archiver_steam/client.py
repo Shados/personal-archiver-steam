@@ -19,12 +19,8 @@ class LogClient(steam.Client):
         print(f"Logged in as {self.user}")
 
     async def on_message(self, message: steam.Message) -> None:
-        from pprint import pprint
-
-        pprint(message)
-        pprint(message.created_at)
+        # I only care about logging DMs
         if not isinstance(message.channel, steam.channel.DMChannel):
-            # print(f"Message isn't in a DMChannel: {message}")
             return
         author, author_id = message.author.name, message.author.id
         dm_with, dm_with_id = (

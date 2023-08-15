@@ -1,9 +1,9 @@
 import os
 
-import jeepney
 import secretstorage
 import typer
 from importlib_metadata import metadata, version
+from jeepney.io.blocking import DBusConnection
 
 from . import client, db
 
@@ -39,6 +39,7 @@ def main() -> None:
                     "STEAM_TOTP_SHARED_SECRET environment variables appropriately"
                 )
             )
+            raise typer.Exit()
 
     # Set up DB connection
     # TODO test connection failure handling
@@ -54,7 +55,7 @@ def main() -> None:
 main.__doc__ = __metadata["Summary"]
 
 
-def get_secret_by_path(conn: jeepney.io.blocking.DBusConnection, path: str) -> bytes:
+def get_secret_by_path(conn: DBusConnection, path: str) -> bytes:
     collection = secretstorage.get_default_collection(conn)
     items = collection.search_items({"Path": path})
     shared_secret = next(items)

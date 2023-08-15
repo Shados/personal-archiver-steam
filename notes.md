@@ -12,9 +12,14 @@
 
 - [ ] Track and update known aliases for users, as well as the
   "last"/most-recent/current alias, to ease later viewing of specific DM
-  channels
+  channels.
 - [ ] Replace print statements with some actual structured logging, or just
-  remove
+  remove.
 - [ ] Optional auto-archiving of any received link/image/etc. URLs via
   archive.org and/or other archives, to make logs a bit more robust in the face
-  of the internet's persistent bitrot
+  of the internet's persistent bitrot.
+- [ ] Write a readme, I guess.
+- [ ] Run through all TODO/FIXME comments.
+- [ ] I could potentially make the pg connectivity more robust, and handle
+  re-connection automatically. OTOH, this has fairly limited benefits over just
+  relying on an external service manager to restart it.

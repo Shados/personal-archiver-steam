@@ -1,5 +1,5 @@
 import datetime
-from typing import Any, Tuple
+from typing import Any, Optional, Tuple
 
 import sqlalchemy
 from sqlalchemy.types import DateTime, TypeDecorator
@@ -26,7 +26,7 @@ class DateTimeUTC(TypeDecorator):
     cache_ok = True
 
     def process_bind_param(
-        self, value: datetime.datetime | None, dialect: sqlalchemy.engine.Dialect
+        self, value: Optional[datetime.datetime], dialect: sqlalchemy.engine.Dialect
     ) -> Any:
         if value is not None:
             if not value.tzinfo:
@@ -35,8 +35,8 @@ class DateTimeUTC(TypeDecorator):
         return value
 
     def process_result_value(
-        self, value: Any | None, dialect: sqlalchemy.engine.Dialect
-    ) -> datetime.datetime | None:
+        self, value: Optional[Any], dialect: sqlalchemy.engine.Dialect
+    ) -> Optional[datetime.datetime]:
         if value is not None:
             value = value.replace(tzinfo=datetime.timezone.utc)
         return value

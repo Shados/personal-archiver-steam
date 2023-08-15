@@ -9,7 +9,11 @@ from . import migrations
 
 
 def connect() -> sqlalchemy.engine.Engine:
-    return sqlalchemy.create_engine(os.environ["DATABASE_URL"])
+    try:
+        return sqlalchemy.create_engine(os.environ["DATABASE_URL"])
+    except KeyError as ex:
+        print("You must set the `DATABASE_URL` environment variable appropriately")
+        raise ex
 
 
 def sql_ensure_schema(engine: Engine) -> MetaData:

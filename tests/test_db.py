@@ -86,3 +86,8 @@ def test_insert_new_message(db_conn: Tuple[MetaData, Connection]) -> None:
     metadata, conn = db_conn
     db.insert_new_message(metadata, conn, TEST_MESSAGES[0])
     db.insert_new_message(metadata, conn, TEST_MESSAGES[1])
+
+
+# TODO message read test; not functionality actually present in
+# personal_archiver_steam, but probably should verify writes are *actually*
+# successful with a basic raw SQL query or something...
