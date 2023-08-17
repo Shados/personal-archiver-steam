@@ -20,7 +20,7 @@ class LogClient(steam.Client):
 
     async def on_message(self, message: steam.Message) -> None:
         # I only care about logging DMs
-        if not isinstance(message.channel, steam.channel.DMChannel):
+        if not isinstance(message.channel, steam.channel.UserChannel):
             return
         author, author_id = message.author.name, message.author.id
         dm_with, dm_with_id = (

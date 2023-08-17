@@ -23,3 +23,5 @@
 - [ ] I could potentially make the pg connectivity more robust, and handle
   re-connection automatically. OTOH, this has fairly limited benefits over just
   relying on an external service manager to restart it.
+- [ ] Startup flag to opt-in to fetching the limited amount of history that
+  Steam keeps for each channel, and upserting that into the DB
