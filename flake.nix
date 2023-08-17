@@ -21,16 +21,27 @@
     poetryOverrides = pkgs.poetry2nix.overrides.withDefaults (self: super: {
       pytest-depends = super.pytest-depends.overridePythonAttrs (oa: {
         buildInputs = oa.buildInputs or [] ++ [
-          super.setuptools
+          self.setuptools # Build backend
         ];
       });
       steamio = super.steamio.overridePythonAttrs (oa: {
         buildInputs = oa.buildInputs or [] ++ [
-          super.poetry
+          self.poetry # Build backend
+          self.tomli # Replacement for Python 3.11 tomllib
         ];
         propagatedBuildInputs = oa.propagatedBuildInputs or [] ++ [
           # Due to the `betterproto` dependency using pkg_resources
-          super.setuptools
+          self.setuptools
+        ];
+      });
+      taskgroup = super.taskgroup.overridePythonAttrs (oa: {
+        buildInputs = oa.buildInputs or [] ++ [
+          self.flit-core # Build backend
+        ];
+      });
+      tomli = super.tomli.overridePythonAttrs (oa: {
+        buildInputs = oa.buildInputs or [] ++ [
+          self.flit-core # Build backend
         ];
       });
     });
