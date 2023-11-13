@@ -11,7 +11,7 @@
     pkgs = import nixpkgs {
       inherit system;
       overlays = [
-        poetry2nix.overlay
+        poetry2nix.overlays.default
       ];
     };
 
