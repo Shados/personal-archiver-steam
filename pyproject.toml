@@ -1,4 +1,4 @@
-# TODO: move all python3.10 references into a single source of truth, same source as used by Nix
+# TODO: move all python3.11 references into a single source of truth, same source as used by Nix
 # TODO: DRY project name
 [tool.poetry]
 name = "personal-archiver-steam"
@@ -12,7 +12,7 @@ readme = "README.md"
 personal-archiver-steam = 'personal_archiver_steam:app'
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.11"
 
 importlib-metadata = "^6.8.0"
 
@@ -20,9 +20,7 @@ alembic = "^1.11.2"
 psycopg2 = "^2.9.7"
 secretstorage = "^3.3.3"
 sqlalchemy = "^2.0.19"
-# steamio = "^0.9.9"
-# 1.0.0 pre-release
-steamio = { git = "https://github.com/Gobot1234/steam.py.git", rev = "b0d540e79d4ea496f597e436e211fc4d0817ea2a" }
+steamio = "^1.0.0"
 typer = "^0.9.0"
 
 [tool.poetry.group.dev.dependencies]

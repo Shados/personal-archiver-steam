@@ -2,7 +2,7 @@
   description = "poetry2nix packaging for personal-archiver-steam";
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.nixpkgs.url = "nixpkgs";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   inputs.poetry2nix.url = "github:nix-community/poetry2nix";
   inputs.poetry2nix.inputs.nixpkgs.follows = "nixpkgs";
   inputs.poetry2nix.inputs.flake-utils.follows = "flake-utils";
@@ -16,7 +16,7 @@
     };
 
     # TODO pull python version from shared single point of truth with pyproject.toml
-    pyPackages = pkgs.python310Packages;
+    pyPackages = pkgs.python311Packages;
 
     poetryOverrides = pkgs.poetry2nix.overrides.withDefaults (self: super: {
       pytest-depends = super.pytest-depends.overridePythonAttrs (oa: {
