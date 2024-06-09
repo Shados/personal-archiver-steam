@@ -60,6 +60,8 @@
       ];
       shellHook = ''
         export PYTHONPATH="$PWD:$PYTHONPATH"
+        # NOTE: See Poetry issues # 1917 and 8761
+        export PYTHON_KEYRING_BACKEND="keyring.backends.null.Keyring"
       '';
     };
 
