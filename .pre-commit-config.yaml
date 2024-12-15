@@ -1,10 +1,10 @@
-# TODO: Somehow pull pythong & tool versions from pyproject.toml?
+# TODO: Somehow pull python & tool versions from pyproject.toml?
 ---
 default_stages: [commit, push]
 exclude: "^(?:nix/.*|.*\\.nix)$"
 
 default_language_version:
-  python: python3.11
+  python: python3.12
 
 fail_fast: false
 repos:

@@ -1,3 +1,4 @@
+import logging
 import os
 
 import secretstorage
@@ -18,6 +19,7 @@ app = typer.Typer()
 
 @app.command()
 def main() -> None:
+    logging.basicConfig(level=os.environ.get("LOG_LEVEL", "INFO").upper())
     if "IN_DEV_ENV" in os.environ:
         # Assume we're in my local dev env and try to pull secrets from
         # Secret Service API
@@ -50,6 +52,7 @@ def main() -> None:
     engine = db.connect()
     metadata = db.sql_ensure_schema(engine)
     with engine.connect() as conn:
+        print("Database connected/setup, starting logger...")
         cli = client.LogClient(metadata, conn)
         cli.run(
             username, password, shared_secret=shared_secret, refresh_token=refresh_token

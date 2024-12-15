@@ -20,7 +20,8 @@ alembic = "^1.11.2"
 psycopg2 = "^2.9.7"
 secretstorage = "^3.3.3"
 sqlalchemy = "^2.0.19"
-steamio = "^1.0.0"
+# steamio = "^1.0.0"
+steamio = { git = "https://github.com/Gobot1234/steam.py.git", rev = "0aa503ec170e72d119563a320d8628a369fdb627" }
 typer = "^0.9.0"
 
 [tool.poetry.group.dev.dependencies]

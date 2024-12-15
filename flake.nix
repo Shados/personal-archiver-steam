@@ -16,7 +16,7 @@
     };
 
     # TODO pull python version from shared single point of truth with pyproject.toml
-    pyPackages = pkgs.python311Packages;
+    pyPackages = pkgs.python312Packages;
 
     poetryOverrides = pkgs.poetry2nix.overrides.withDefaults (self: super: {
       pytest-depends = super.pytest-depends.overridePythonAttrs (oa: {
