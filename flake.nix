@@ -56,7 +56,7 @@
         # pyright
 
         # Used in integration tests
-        postgresql_15
+        postgresql_16
       ];
       shellHook = ''
         export PYTHONPATH="$PWD:$PYTHONPATH"

@@ -26,23 +26,24 @@ def main() -> None:
         conn = secretstorage.dbus_init()
         username = "Shados"
         password = get_secret_by_path(conn, "/Gaming/Steam").decode("utf-8")
-        refresh_token = get_secret_by_path(
-            conn, "/Gaming/Steam - TOTP Refresh Token"
+        identity_secret = get_secret_by_path(
+            conn, "/Gaming/Steam - TOTP Identity Secret"
         ).decode("utf-8")
-        shared_secret = get_secret_by_path(conn, "/Gaming/Steam - TOTP Secret").decode(
-            "utf-8"
-        )
+        shared_secret = get_secret_by_path(
+            conn, "/Gaming/Steam - TOTP Shared Secret"
+        ).decode("utf-8")
     else:
         try:
             username = os.environ["STEAM_USERNAME"]
             password = os.environ["STEAM_PASSWORD"]
-            refresh_token = os.environ["STEAM_TOTP_REFRESH_TOKEN"]
+            identity_secret = os.environ["STEAM_TOTP_IDENTITY_SECRET"]
             shared_secret = os.environ["STEAM_TOTP_SHARED_SECRET"]
         except KeyError:
             print(
                 (
-                    "You must set the STEAM_USERNAME, STEAM_PASSWORD, and "
-                    "STEAM_TOTP_SHARED_SECRET environment variables appropriately"
+                    "You must set the STEAM_USERNAME, STEAM_PASSWORD,"
+                    "STEAM_TOTP_IDENTITY_SECRET, and STEAM_TOTP_SHARED_SECRET"
+                    "environment variables appropriately"
                 )
             )
             raise typer.Exit()
@@ -55,7 +56,10 @@ def main() -> None:
         print("Database connected/setup, starting logger...")
         cli = client.LogClient(metadata, conn)
         cli.run(
-            username, password, shared_secret=shared_secret, refresh_token=refresh_token
+            username,
+            password,
+            shared_secret=shared_secret,
+            identity_secret=identity_secret,
         )
 
 
