@@ -18,31 +18,39 @@
     # TODO pull python version from shared single point of truth with pyproject.toml
     pyPackages = pkgs.python312Packages;
 
-    poetryOverrides = pkgs.poetry2nix.overrides.withDefaults (self: super: {
-      pytest-depends = super.pytest-depends.overridePythonAttrs (oa: {
+    poetryOverrides = pkgs.poetry2nix.defaultPoetryOverrides.extend (final: prev: {
+      pytest-depends = prev.pytest-depends.overridePythonAttrs (oa: {
         buildInputs = oa.buildInputs or [] ++ [
-          self.setuptools # Build backend
+          final.setuptools # Build backend
         ];
       });
-      steamio = super.steamio.overridePythonAttrs (oa: {
+      steamio = prev.steamio.overridePythonAttrs (oa: {
         buildInputs = oa.buildInputs or [] ++ [
-          self.poetry # Build backend
-          self.tomli # Replacement for Python 3.11 tomllib
+          final.poetry # Build backend
+          final.tomli # Replacement for Python 3.11 tomllib
         ];
         propagatedBuildInputs = oa.propagatedBuildInputs or [] ++ [
           # Due to the `betterproto` dependency using pkg_resources
-          self.setuptools
+          final.setuptools
         ];
       });
-      taskgroup = super.taskgroup.overridePythonAttrs (oa: {
+      taskgroup = prev.taskgroup.overridePythonAttrs (oa: {
         buildInputs = oa.buildInputs or [] ++ [
-          self.flit-core # Build backend
+          final.flit-core # Build backend
         ];
       });
-      tomli = super.tomli.overridePythonAttrs (oa: {
+      tomli = prev.tomli.overridePythonAttrs (oa: {
         buildInputs = oa.buildInputs or [] ++ [
-          self.flit-core # Build backend
+          final.flit-core # Build backend
         ];
+      });
+      cryptography = prev.cryptography.overridePythonAttrs(oa: {
+        cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
+          inherit (oa) src;
+          sourceRoot = "${oa.pname}-${oa.version}/src/rust";
+          name = "${oa.pname}-${oa.version}";
+          hash = "sha256-yZg8HSdDufsIu7vvjdzk/AHSVKkteXmQuoF9jAVJIVY=";
+        };
       });
     });
     inherit (pkgs.lib) elem flip;
