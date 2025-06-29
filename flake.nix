@@ -19,6 +19,24 @@
     pyPackages = pkgs.python312Packages;
 
     poetryOverrides = pkgs.poetry2nix.defaultPoetryOverrides.extend (final: prev: {
+      cryptography = prev.cryptography.overridePythonAttrs(oa: {
+        cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
+          inherit (oa) src;
+          sourceRoot = "${oa.pname}-${oa.version}/src/rust";
+          name = "${oa.pname}-${oa.version}";
+          hash = "sha256-rioZi/lxMHeTLUb8GGRcBP7pCeoBsbhaczTWkCD0ApE=";
+        };
+      });
+      mypy-extensions = prev.mypy-extensions.overridePythonAttrs(oa: {
+        buildInputs = oa.buildInputs or [] ++ [
+          final.flit-core # Build backend
+        ];
+      });
+      psycopg2 = prev.psycopg2.overridePythonAttrs (oa: {
+        nativeBuildInputs = oa.nativeBuildInputs or [] ++ [
+          pkgs.postgresql_16.pg_config
+        ];
+      });
       pytest-depends = prev.pytest-depends.overridePythonAttrs (oa: {
         buildInputs = oa.buildInputs or [] ++ [
           final.setuptools # Build backend
@@ -44,14 +62,6 @@
           final.flit-core # Build backend
         ];
       });
-      cryptography = prev.cryptography.overridePythonAttrs(oa: {
-        cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
-          inherit (oa) src;
-          sourceRoot = "${oa.pname}-${oa.version}/src/rust";
-          name = "${oa.pname}-${oa.version}";
-          hash = "sha256-yZg8HSdDufsIu7vvjdzk/AHSVKkteXmQuoF9jAVJIVY=";
-        };
-      });
     });
     inherit (pkgs.lib) elem flip;
   in rec {
@@ -62,6 +72,7 @@
         coreutils yj jq gnused # used in .envrc
         # niv
         # pyright
+        postgresql_16.pg_config
 
         # Used in integration tests
         postgresql_16
